@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+
+<script src="js/getParam.js"></script>
+<script src="js/jquery-3.2.1.js"></script>
+
+<body>
+        <div>
+            文件:<input type="text" id="file" name="desc" value="请输入文件名">
+            <input type="button" id="transfer" value="转写"></br>
+            <h1 id="taskId1">您的查询单号为</h1> </br>
+            <P>根据查询号来获取结果</P></br>
+        </div>
+
+        <div>
+            查询单号:<input type="text" id="taskId2" name="desc">
+            <input type="button" id="queryStatus"  value="查询订单状态">
+<!--            <div id="result"></div>-->
+        </div>
+
+        <div>
+            查询单号:<input type="text" id="taskId3" name="desc">
+            <input type="button" id="queryResult"  value="查看结果">
+            <!--            <div id="result"></div>-->
+            <div id="download"></div>
+        </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        var param = getUrlParam("fileName");
+        if(param){
+            $("#file").val(param);
+        }
+        //语音转写事件
+        $("#transfer").click(function () {
+
+            $.get("ifasrServlet?methodName=speechTask&fileName="+$("#file").val(),
+                function (data) {
+                if(data){
+                    alert(data.TaskId)
+                    $("#taskId1").text("您的查询单号为 ： "+data.TaskId);
+                }else {
+                    alert("转写错误");
+                }
+
+
+
+            },"json");
+
+
+        });
+        //订单状态查询事件
+        $("#queryStatus").click(function () {
+
+            $.get("ifasrServlet?methodName=queryOrderStatus&taskid="+$("#taskId2").val(),
+                function (data) {
+                switch (data.status) {
+                    case 1:
+                        alert("转写中请耐心等待")
+                        break;
+                    case 2:
+
+                       //  let result1=result.Result;
+                       //  // result1=result1.replace("\n","</br>");
+                       // result1= result1.split("\n").join("</br>");
+                       //  console.log(result1)
+                       //  $("#result").html(result1);
+                       // 转写成功
+                        alert("转写成功")
+                        break;
+                    default :
+                        alert("转写失败，请检查文件")
+                        break;
+                }
+
+
+                },"json");
+
+        });
+
+        //结果查询事件
+        $("#queryResult").click(function () {
+
+            $.get("ifasrServlet?methodName=resultsQuery&taskid="+$("#taskId3").val(),
+                function (data) {
+                let URL=  "<a href=downloadServlet?filename="+data.fileName+">"+data.fileName+"</a><br>";
+                $("#download").html(URL);
+                },"json");
+
+
+        });
+
+
+    })
+
+</script>
+
+</html>
