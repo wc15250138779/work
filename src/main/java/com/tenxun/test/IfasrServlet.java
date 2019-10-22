@@ -126,8 +126,36 @@ public class IfasrServlet extends BaseServlet{
             FileWriter writer;
             try {
                 writer = new FileWriter(realPath+"\\"+task_id+".txt",true);
+                //控制变量
+                int count=1;
                 for (Word word:words) {
-                    writer.write(word.getBg()+"---"+word.getEd()+"    "+word.getOnebest() +"\r\n");
+                    //过滤语气词
+                    String onebest = word.getOnebest();//.replaceAll("啊|嘛|嗯|哦|吧", "");
+                    writer.write("   ");
+                    //内容不为空写入
+                    if(onebest!=null && onebest!=""){
+                        //检测结尾符号
+                        String tailed = onebest.substring(onebest.length()-1, onebest.length());
+                        //写入文件
+                        writer.write(onebest);
+                        //有结尾标点才结束
+                        if(onebest.length()> 10 && (tailed.equals("！")||tailed.equals("。")||tailed.equals("？"))){
+                            System.out.println("tailed = " + tailed);
+                            System.out.println("length = " + onebest.length());
+                            System.out.println("count = " + count);
+                            count++;
+                            //换行
+                            if(count%6==0){
+                                count=1;
+                                writer.write("\r\n   ");
+                            }
+                        }
+
+
+
+                    }
+
+
                 }
                 writer.flush();
                 writer.close();
@@ -136,6 +164,7 @@ public class IfasrServlet extends BaseServlet{
                 result.put("fileName",task_id+".txt");
             } catch (IOException e) {
                 e.printStackTrace();
+                result.put("flag",false);
             }
 
             //3.响应数据
@@ -168,7 +197,7 @@ public class IfasrServlet extends BaseServlet{
             if (resultMsg.getOk() == 0) {
                 // 打印转写结果
                 String result =resultMsg.getData();
-               // System.out.println("result = " + result);
+//                System.out.println("result = " + result);
                 return result;
             } else {
                 // 获取任务结果失败

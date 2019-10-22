@@ -87,8 +87,13 @@
 
             $.get("ifasrServlet?methodName=resultsQuery&taskid="+$("#taskId3").val(),
                 function (data) {
-                let URL=  "<a href=downloadServlet?filename="+data.fileName+">"+data.fileName+"</a><br>";
-                $("#download").html(URL);
+                if(data.flag){
+                    let URL=  "<a href=downloadServlet?filename="+data.fileName+">"+data.fileName+"</a><br>";
+                    $("#download").html(URL);
+                }else {
+                    alert("转写中请耐心等待");
+                }
+
                 },"json");
 
 
