@@ -141,9 +141,6 @@ public class IfasrServlet extends BaseServlet{
                         writer.write(onebest);
                         //有结尾标点才结束
                         if(onebest.length()> 10 && (tailed.equals("！")||tailed.equals("。")||tailed.equals("？"))){
-                            System.out.println("tailed = " + tailed);
-                            System.out.println("length = " + onebest.length());
-                            System.out.println("count = " + count);
                             count++;
                             //换行
                             if(count%6==0){
