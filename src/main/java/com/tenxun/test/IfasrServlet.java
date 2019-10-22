@@ -128,10 +128,11 @@ public class IfasrServlet extends BaseServlet{
                 writer = new FileWriter(realPath+"\\"+task_id+".txt",true);
                 //控制变量
                 int count=1;
+                writer.write("   ");
                 for (Word word:words) {
                     //过滤语气词
                     String onebest = word.getOnebest();//.replaceAll("啊|嘛|嗯|哦|吧", "");
-                    writer.write("   ");
+
                     //内容不为空写入
                     if(onebest!=null && onebest!=""){
                         //检测结尾符号
