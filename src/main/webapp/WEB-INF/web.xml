@@ -15,10 +15,10 @@
 <!--        </user-data-constraint>-->
 <!--    </security-constraint>-->
 
-    <session-config>
+<!--    <session-config>-->
 
-        <session-timeout>15</session-timeout>
+<!--        <session-timeout>15</session-timeout>-->
 
-    </session-config>
+<!--    </session-config>-->
 
 </web-app>
